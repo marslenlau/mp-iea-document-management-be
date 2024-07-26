@@ -27,14 +27,14 @@ model User {
   rol         Role     @default(reader)
   status      Boolean  @default(true)
   file        File?    @relation(fields: [id_file], references: [id])
-  id_file     String?
+  id_file     Int?
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
   @@map("user")
 }
 model File {
-  id           String   @id
+  id           Int   @id @default(autoincrement())
   content_type String
   file_name    String
   file_size    String
@@ -48,3 +48,13 @@ model File {
   @@map("file")
 }
 
+model Organization {
+  id          Int      @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  status      Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("organization")
+}
