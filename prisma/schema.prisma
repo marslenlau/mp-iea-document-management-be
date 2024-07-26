@@ -3,7 +3,11 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+enum Role {
+  admin
+  reader
+  writer
+}
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,8 +16,23 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model User {
+  id          Int      @id @default(autoincrement())
+  first_name  String
+  last_name   String
+  email       String   @unique
+  password    String?
+  phone       String?
+  description String?
+  rol         Role     @default(reader)
+  status      Boolean  @default(true)
+  file        File?    @relation(fields: [id_file], references: [id])
+  id_file     String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
-
+  @@map("user")
+}
 model File {
   id           String   @id
   content_type String
@@ -22,9 +41,10 @@ model File {
   file_path    String
   is_picture   Boolean
   status       Boolean?
-  // users        User[]
+  users        User[]
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
-  @@map("File")
+  @@map("file")
 }
+

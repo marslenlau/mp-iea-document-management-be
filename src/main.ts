@@ -7,7 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('Bootstrap');
 
-  //
+  //*configuration global prefix
+  app.setGlobalPrefix('api/v1');
 
   //* config variables enviroment
   const configService = app.get(ConfigService);
