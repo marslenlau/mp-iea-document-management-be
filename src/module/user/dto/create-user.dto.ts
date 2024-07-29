@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsEmail, IsNumber, IsOptional, IsString } from "class-validator";
 import { Role } from "../interfaces";
 
 export class CreateUserDto {
@@ -27,7 +27,7 @@ export class CreateUserDto {
     @IsBoolean()
     status: boolean;
 
-    @IsString()
+    @IsNumber()
     @IsOptional()
-    id_file: string;
+    id_file: number;
 }

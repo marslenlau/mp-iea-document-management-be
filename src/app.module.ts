@@ -7,6 +7,7 @@ import { FileModule } from './module/file/file.module';
 import { AuthModule } from './module/auth/auth.module';
 import { MailModule } from './module/mail/mail.module';
 import { OrganizationModule } from './module/organization/organization.module';
+import { InstrumentModule } from './module/instrument/instrument.module';
 @Module({
   imports: [
     // Import the ConfigModule
@@ -19,6 +20,7 @@ import { OrganizationModule } from './module/organization/organization.module';
     AuthModule,
     MailModule,
     OrganizationModule,
+    InstrumentModule,
   ],
   controllers: [],
   providers: [],

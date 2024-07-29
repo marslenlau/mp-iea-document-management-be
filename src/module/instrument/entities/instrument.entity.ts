@@ -1,10 +1,9 @@
-export class Organization {
+export class Instrument {
     id: number;
     name: string;
     description?: string | null;
     status: boolean;
-    organization: Organization;
-    id_organization: number;
+    instruments?: Instrument[];
     created_at: Date;
     updated_at: Date;
 }

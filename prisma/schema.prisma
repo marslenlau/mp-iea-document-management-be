@@ -53,8 +53,22 @@ model Organization {
   name        String  @unique
   description String?
   status      Boolean  @default(true)
+  instruments Instrument[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
   @@map("organization")
+}
+
+model Instrument {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  status      Boolean  @default(true)
+  organization Organization @relation(fields: [id_organization], references: [id])
+  id_organization Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("instrument")
 }

@@ -12,7 +12,7 @@ export class User {
     rol: Role;
     status: boolean;
     file?: File;
-    id_file?: string;
+    id_file?: number;
     created_at: Date;
     updated_at: Date;
 }
