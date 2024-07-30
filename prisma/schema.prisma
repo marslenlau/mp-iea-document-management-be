@@ -78,8 +78,20 @@ model Document {
   name        String   @unique
   description String?
   status      Boolean  @default(true)
+  items       Item[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
   @@map("document")
+}
+
+model Item {
+  id          Int      @id @default(autoincrement())
+  status      Boolean  @default(true)
+  document    Document @relation(fields: [id_document], references: [id])
+  id_document Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("item")
 }

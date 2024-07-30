@@ -9,6 +9,7 @@ import { MailModule } from './module/mail/mail.module';
 import { OrganizationModule } from './module/organization/organization.module';
 import { InstrumentModule } from './module/instrument/instrument.module';
 import { DocumentModule } from './module/document/document.module';
+import { ItemModule } from './module/item/item.module';
 @Module({
   imports: [
     // Import the ConfigModule
@@ -23,6 +24,7 @@ import { DocumentModule } from './module/document/document.module';
     OrganizationModule,
     InstrumentModule,
     DocumentModule,
+    ItemModule,
   ],
   controllers: [],
   providers: [],

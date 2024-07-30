@@ -15,6 +15,7 @@ export class DocumentService {
   constructor(
     private prismaService: PrismaService,
   ) {}
+  
   async create(createDocumentDto: CreateDocumentDto) {
     try {
       const document = this.prismaService.document.create({
