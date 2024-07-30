@@ -42,6 +42,7 @@ model File {
   is_picture   Boolean
   status       Boolean?
   users        User[]
+  resolutions  Resolution[]
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
@@ -67,6 +68,7 @@ model Instrument {
   status      Boolean  @default(true)
   organization Organization @relation(fields: [id_organization], references: [id])
   id_organization Int
+  resolutions Resolution[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
@@ -79,6 +81,7 @@ model Document {
   description String?
   status      Boolean  @default(true)
   items       Item[]
+  resolutions Resolution[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
@@ -90,8 +93,29 @@ model Item {
   status      Boolean  @default(true)
   document    Document @relation(fields: [id_document], references: [id])
   id_document Int
+  resolutions Resolution[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
   @@map("item")
+}
+
+model Resolution {
+  id          Int      @id @default(autoincrement())
+  dr_date     DateTime
+  nro         String
+  description String 
+  status      Boolean  @default(true)
+  file        File?    @relation(fields: [id_file], references: [id])
+  id_file     Int
+  document    Document @relation(fields: [id_document], references: [id])
+  id_document Int
+  instrument  Instrument @relation(fields: [id_instrument], references: [id])
+  id_instrument Int
+  item       Item @relation(fields: [id_item], references: [id])
+  id_item     Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("resolution")
 }

@@ -10,6 +10,7 @@ import { OrganizationModule } from './module/organization/organization.module';
 import { InstrumentModule } from './module/instrument/instrument.module';
 import { DocumentModule } from './module/document/document.module';
 import { ItemModule } from './module/item/item.module';
+import { ResolutionModule } from './module/resolution/resolution.module';
 @Module({
   imports: [
     // Import the ConfigModule
@@ -25,6 +26,7 @@ import { ItemModule } from './module/item/item.module';
     InstrumentModule,
     DocumentModule,
     ItemModule,
+    ResolutionModule,
   ],
   controllers: [],
   providers: [],
