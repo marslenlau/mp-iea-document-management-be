@@ -28,6 +28,7 @@ export class InstrumentService {
     try {
       const instrument = await this.prisma.instrument.create({
         data: createInstrumentDto,
+        select: this.instrumentFields,
       });
       return instrument;
     } catch (error) {

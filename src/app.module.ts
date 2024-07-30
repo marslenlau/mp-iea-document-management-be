@@ -11,11 +11,20 @@ import { InstrumentModule } from './module/instrument/instrument.module';
 import { DocumentModule } from './module/document/document.module';
 import { ItemModule } from './module/item/item.module';
 import { ResolutionModule } from './module/resolution/resolution.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
     // Import the ConfigModule
     ConfigModule.forRoot({
       load: [EnvConfiguration]
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+      serveStaticOptions: {
+        index: false
+      }
     }),
     PrismaModule,
     UserModule,

@@ -1,6 +1,6 @@
 import { IsBoolean, IsOptional, IsString } from "class-validator";
 
-export class CreateFileDto {
+export class FileCommonDto {
     @IsString()
     content_type: string;
 
@@ -16,8 +16,4 @@ export class CreateFileDto {
     @IsBoolean()
     @IsOptional()
     is_picture: boolean;
-
-    @IsBoolean()
-    @IsOptional()
-    status: boolean;
 }

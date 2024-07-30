@@ -23,7 +23,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         } else if (exception instanceof Error) {
             message = exception.message;
         }
-        this.logger.error('No stack trace');
+        this.logger.error(`Http status: ${status} Error message: ${message}`);
         response.status(status).json({
             statusCode: status,
             message: message,
