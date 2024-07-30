@@ -8,6 +8,7 @@ import { AuthModule } from './module/auth/auth.module';
 import { MailModule } from './module/mail/mail.module';
 import { OrganizationModule } from './module/organization/organization.module';
 import { InstrumentModule } from './module/instrument/instrument.module';
+import { DocumentModule } from './module/document/document.module';
 @Module({
   imports: [
     // Import the ConfigModule
@@ -21,6 +22,7 @@ import { InstrumentModule } from './module/instrument/instrument.module';
     MailModule,
     OrganizationModule,
     InstrumentModule,
+    DocumentModule,
   ],
   controllers: [],
   providers: [],

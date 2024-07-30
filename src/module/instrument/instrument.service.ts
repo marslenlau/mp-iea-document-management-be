@@ -26,7 +26,7 @@ export class InstrumentService {
 
   async create(createInstrumentDto: CreateInstrumentDto) {
     try {
-      const instrument = this.prisma.instrument.create({
+      const instrument = await this.prisma.instrument.create({
         data: createInstrumentDto,
       });
       return instrument;
@@ -42,9 +42,10 @@ export class InstrumentService {
     return instruments;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     try {
-      const instrument = this.prisma.instrument.findUnique({
+      await this.getInstrument(id);
+      const instrument = await this.prisma.instrument.findUnique({
         where: { id },
         select: this.instrumentFields,
       });
@@ -57,7 +58,7 @@ export class InstrumentService {
   async update(id: number, updateInstrumentDto: UpdateInstrumentDto) {
     try {
       await this.getInstrument(id);
-      const instrument = this.prisma.instrument.update({
+      const instrument = await this.prisma.instrument.update({
         where: { id },
         data: updateInstrumentDto,
         select: this.instrumentFields,
@@ -68,15 +69,10 @@ export class InstrumentService {
     }
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     try {
-      const existingInstrument = this.prisma.instrument.findUnique({
-        where: { id },
-      });
-      if (!existingInstrument) {
-        throw new BadRequestException(`Instrument with id ${id} not found`);
-      }
-      const instrument = this.prisma.instrument.delete({
+      await this.getInstrument(id);
+      const instrument =await this.prisma.instrument.delete({
         where: { id },
       });
       return {
