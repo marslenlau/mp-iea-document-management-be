@@ -12,44 +12,123 @@ import { CreateItemDto } from '../item/dto/create-item.dto';
 export class ResolutionService {
   constructor(
     private prisma: PrismaService,
-    private fileService: FileService,
     private itemService: ItemService
   ) {}
 
-  async create(createResolutionDto: CreateResolutionDto, image: Express.Multer.File) {
+  async create(createResolutionDto: CreateResolutionDto) {
     try {
-      const fileDtoCommon: CreateFileDto = {
-        content_type: image.mimetype,
-        file_name: image.filename,
-        file_size: image.size.toString(),
-        file_path: image.destination,
-        is_picture: image.mimetype.startsWith('image/'),
-        status: true
-      };
-      const fileSave = await this.fileService.create(fileDtoCommon);
-
       const itemDto: CreateItemDto = {
         status: true,
         id_document: +createResolutionDto.id_document,
       }
       const itemSave = await this.itemService.create(itemDto);
-      
-      return itemSave;
+      const resolutionDto: CreateResolutionDto = {
+        doc_date: new Date(createResolutionDto.doc_date).toISOString(),
+        nro: createResolutionDto.nro,
+        description: createResolutionDto.description,
+        status: createResolutionDto.status,
+        id_document: +createResolutionDto.id_document,
+        id_item: itemSave.id,
+        id_file: +createResolutionDto.id_file,
+        id_instrument: +createResolutionDto.id_instrument,
+      };
+      const createResolution = await this.prisma.resolution.create({
+        data: resolutionDto,
+        select: {
+          id: true,
+          doc_date: true,
+          nro: true,
+          description: true,
+          status: true,
+          id_document: true,
+          id_item: true,
+          file:{
+            select: {
+              id: true,
+              file_name: true,
+              file_path: true,
+            }
+          },
+          id_instrument: true,
+        }
+      });
+      return createResolution;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
   }
 
   findAll() {
-    return `This action returns all resolution`;
+    const resolutions = this.prisma.resolution.findMany({
+      select: {
+        id: true,
+        doc_date: true,
+        nro: true,
+        description: true,
+        file:{
+          select: {
+            id: true,
+            file_name: true,
+            file_path: true,
+          }
+        },
+      }
+    });
+    return resolutions;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
+    try {
+      const resolution = await this.prisma.resolution.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          doc_date: true,
+          nro: true,
+          description: true,
+          id_instrument: true,
+          file:{
+            select: {
+              id: true,
+              file_name: true,
+              file_path: true,
+            }
+          },
+        },
+      });
+      if (!resolution) {
+        throw new BadRequestException(`Organization with id ${id} not found`);
+      }
+      return resolution;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
     return `This action returns a #${id} resolution`;
   }
 
   update(id: number, updateResolutionDto: UpdateResolutionDto) {
-    return `This action updates a #${id} resolution`;
+    try {
+      const resolution = this.prisma.resolution.update({
+        where: { id },
+        data: updateResolutionDto,
+        select: {
+          id: true,
+          doc_date: true,
+          nro: true,
+          description: true,
+          file:{
+            select: {
+              id: true,
+              file_name: true,
+              file_path: true,
+            }
+          },
+        }
+      });
+      return resolution;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   remove(id: number) {

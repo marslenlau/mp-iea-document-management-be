@@ -8,12 +8,23 @@ export class FileService {
   constructor(
     private prisma: PrismaService,
   ) {}
-  async create(createFileDto: CreateFileDto) {
+  async create(file: Express.Multer.File) {
     try {
-      const file = await this.prisma.file.create({
-        data: createFileDto,
+      const fileDtoCommon: CreateFileDto = {
+        content_type: file.mimetype,
+        file_name: file.filename,
+        file_size: file.size.toString(),
+        file_path: file.destination,
+        is_picture: file.mimetype.startsWith('pdf/'),
+        status: true
+      };
+      const fileSave = await this.prisma.file.create({
+        data: fileDtoCommon,
+        select: {
+          id: true,
+        }
       });
-      return file;
+      return fileSave;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -27,9 +38,29 @@ export class FileService {
   //   return `This action returns a #${id} file`;
   // }
 
-  // update(id: number, updateFileDto: UpdateFileDto) {
-  //   return `This action updates a #${id} file`;
-  // }
+  update(id: number, updateFileDto: UpdateFileDto, file: Express.Multer.File) {
+    try {
+      const fileDtoCommon: UpdateFileDto = {
+        content_type: file.mimetype,
+        file_name: file.filename,
+        file_size: file.size.toString(),
+        file_path: file.destination,
+        is_picture: file.mimetype.startsWith('pdf/'),
+        status: true
+      };
+      const fileSave = this.prisma.file.update({
+        where: { id },
+        data: fileDtoCommon,
+        select: {
+          id: true,
+        }
+      });
+      return fileSave;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+    return `This action updates a #${id} file`;
+  }
 
   // remove(id: number) {
   //   return `This action removes a #${id} file`;

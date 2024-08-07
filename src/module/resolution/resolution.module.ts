@@ -13,5 +13,6 @@ import { ItemModule } from '../item/item.module';
     FileModule,
     ItemModule,
   ],
+  exports: [ResolutionService]
 })
 export class ResolutionModule {}

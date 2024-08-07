@@ -9,28 +9,39 @@ import { diskStorage } from 'multer';
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @Post('image')
-  @UseInterceptors( FileInterceptor('image', {
+  @Post()
+  @UseInterceptors( FileInterceptor('file', {
     storage: diskStorage({
-      destination: './uploads/images',
+      destination: './uploads/pdf',
       filename: (req, file, cb) => {
-        const filename = `${Date.now()}-${file.originalname.replace(/\s/g, '')}`;
+        const fileExtension = file.originalname.split('.').pop();
+        const filename = `${Date.now()}.${fileExtension}`;
         return cb(null, filename);
       },
     })
   }))
   uploadImage(
-    @UploadedFile() image: Express.Multer.File,
-    @Body() createFileDto: CreateFileDto
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return {
-      image,
-      createFileDto
-    };
+    return this.fileService.create(file);
   }
 
-  @Post()
-  create(@Body() createFileDto: CreateFileDto) {
-    return this.fileService.create(createFileDto);
+  @Patch(':id')
+  @UseInterceptors( FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './uploads/pdf',
+      filename: (req, file, cb) => {
+        const fileExtension = file.originalname.split('.').pop();
+        const filename = `${Date.now()}.${fileExtension}`;
+        return cb(null, filename);
+      },
+    })
+  }))
+  uploadImageHUpdate(
+    @Param('id') id: string,
+    @Body() updateFileDto: UpdateFileDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.fileService.update(+id, updateFileDto, file);
   }
 }

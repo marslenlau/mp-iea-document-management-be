@@ -15,6 +15,17 @@ export class CreateResolutionDto {
     @IsOptional()
     status: boolean;
 
-    @IsString()
-    id_document: string;
+    @IsNumber()
+    id_document: number;
+
+    @IsNumber()
+    id_file: number;
+
+    @IsNumber()
+    @IsOptional()
+    id_instrument: number;
+
+    @IsNumber()
+    @IsOptional()
+    id_item: number;
 }

@@ -13,6 +13,7 @@ import { ItemModule } from './module/item/item.module';
 import { ResolutionModule } from './module/resolution/resolution.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { SearchModule } from './module/search/search.module';
 @Module({
   imports: [
     // Import the ConfigModule
@@ -36,6 +37,7 @@ import { join } from 'path';
     DocumentModule,
     ItemModule,
     ResolutionModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [],
